@@ -1,0 +1,30 @@
+[
+    {
+        "model": "econoshows_api.genre",
+        "pk": 1,
+        "fields": {
+            "name": "Rock"
+        }
+    },
+    {
+        "model": "econoshows_api.genre",
+        "pk": 2,
+        "fields": {
+            "name": "Country"
+        }
+    },
+    {
+        "model": "econoshows_api.genre",
+        "pk": 3,
+        "fields": {
+            "name": "punk"
+        }
+    },
+    {
+        "model": "econoshows_api.genre",
+        "pk": 4,
+        "fields": {
+            "name": "noise"
+        }
+    }
+]

@@ -1,0 +1,62 @@
+[
+    {
+        "model": "econoshows_api.show",
+        "pk": 1,
+        "fields": {
+            "title": "MYSAH / Styrofoam Winos @ DRKMTTR",
+            "description": "Come hang with us and our friends Styrofoam Winos for our Full length album release!",
+            "door_time": "8:00 PM",
+            "show_time": "9:00 PM",
+            "cover": "$10",
+            "date": "2021-10-09",
+            "is_all_ages": true,
+            "genre": 1,
+            "poster": ""
+        }
+    },
+    {
+        "model": "econoshows_api.show",
+        "pk": 2,
+        "fields": {
+            "title": "MYSAH / Emily Clement @ The East Room",
+            "description": "We can't wait to see all of our friends again!",
+            "door_time": "8:00 PM",
+            "show_time": "9:00 PM",
+            "cover": "$10",
+            "date": "2021-11-12",
+            "is_all_ages": false,
+            "genre": 1,
+            "poster": ""
+        }
+    },
+    {
+        "model": "econoshows_api.show",
+        "pk": 3,
+        "fields": {
+            "title": "TRR / Emily Nenni @ DRKMTTR",
+            "description": "There won't be a tear in your beer at this lively gathering",
+            "door_time": "8:00 PM",
+            "show_time": "9:00 PM",
+            "cover": "$10",
+            "date": "2021-05-04",
+            "is_all_ages": true,
+            "genre": 2,
+            "poster": ""
+        }
+    },
+    {
+        "model": "econoshows_api.show",
+        "pk": 4,
+        "fields": {
+            "title": "Orville Peck / TRR @ The East Room",
+            "description": "Tour kickoff show!",
+            "door_time": "8:00 PM",
+            "show_time": "9:00 PM",
+            "cover": "$15",
+            "date": "2021-06-12",
+            "is_all_ages": false,
+            "genre": 2,
+            "poster": ""
+        }
+    }
+]

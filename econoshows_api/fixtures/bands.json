@@ -1,0 +1,30 @@
+[
+    {
+        "model": "econoshows_api.band", 
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "user_type": "band",
+            "band_name": "MYSAH",
+            "genre": 2,
+            "lineup": "4-piece",
+            "links": "mysahband.bandcamp.com",
+            "photos": "",
+            "bio": "4-piece rock band from Nashville, TN compromised of lead singer songwriter Billy Campbell joined with his backing band of Daniel Sauls on drums, Parker Van Der Hyde on Bass, and Josh Halper on Lead Guitar"
+        }
+    },
+    {
+        "model": "econoshows_api.band", 
+        "pk": 2,
+        "fields": {
+            "user": 2,
+            "user_type": "band",
+            "band_name": "Teddy & The Rough Riders",
+            "genre": 1,
+            "lineup": "4-piece",
+            "links": "https://teddyandtheroughriders.bandcamp.com/",
+            "photos": "",
+            "bio": "4-piece outlaw country outfit from Nashville, TN"
+        }
+    }
+]
