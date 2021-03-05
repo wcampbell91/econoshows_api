@@ -55,3 +55,17 @@ class Venues(ViewSet):
         venue.save()
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+    def retrieve(self,request,pk=None):
+        """Handle GET for single venue"""
+        try:
+            venue = Venue.objects.get(pk=pk, user=request.auth.user)
+            serializer = VenueSerializer(venue, many=False, context={'request': request})
+            return Response(serializer.data)
+        except Venue.DoesNotExist as ex:
+            return Response(
+                {"mesage": "The requested venue does not exist, or you do not have permission to access it"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as ex:
+            return HttpResponseServerError(ex)
