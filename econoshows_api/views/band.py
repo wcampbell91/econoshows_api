@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
-from rest_framework import serializers, status
+from rest_framework import serializers, status, permissions
 from econoshows_api.models import Band, Genre
 
 
@@ -38,8 +38,16 @@ class BandSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'user', 'band_name', 'genre', 'user_type', 'lineup', 'links', 'bio')
         depth = 1
 
+
+class IsOwnerOrReadOnly(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return obj.user == request.user
 class Bands(ViewSet):
     """Request handlers for Bands in EconoShows"""
+
+    permission_classes=[ IsOwnerOrReadOnly ]
     
     def list(self, request):
         bands = Band.objects.all()
@@ -81,3 +89,19 @@ class Bands(ViewSet):
             )
         except Exception as ex:
             return HttpResponseServerError(ex)
+
+    def destroy(self, request, pk=None):
+        try:
+            band = Band.objects.get(pk=pk)
+            user = User.objects.get(pk=request.auth.user.id)
+            self.check_object_permissions(request, band)
+            band.delete()
+            user.delete()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        except Band.DoesNotExist as ex:
+            return Response({"message": ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as ex:
+            return Response({"message": ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

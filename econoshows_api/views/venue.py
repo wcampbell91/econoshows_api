@@ -35,7 +35,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 class Venues(ViewSet):
     """Request handler for Venues in the EconoShows platform"""
 
-    permission_classes= [ IsOwnerOrReadOnly]
+    permission_classes= [ IsOwnerOrReadOnly ]
 
     def list(self, request):
         """Handle GET requests for a Venue"""
