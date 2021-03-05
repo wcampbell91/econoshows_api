@@ -67,3 +67,17 @@ class Bands(ViewSet):
         band.save()
         
         return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+    def retrieve(self, request, pk=None):
+        """Handle GET requests for single band"""
+        try:
+            band = Band.objects.get(pk=pk, user=request.auth.user)
+            serializer = BandSerializer(band, many=False, context={'request': request})
+            return Response(serializer.data)
+        except Band.DoesNotExist as ex:
+            return Response(
+                {'message': "The requested band does not exist, or you do not have permission to access it"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as ex:
+            return HttpResponseServerError(ex)
