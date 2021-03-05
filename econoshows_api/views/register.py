@@ -42,6 +42,7 @@ def register_band(request):
         password=req_body['password'],
         first_name=req_body['first_name'],
         last_name=req_body['last_name'],
+        is_staff=True
     )
 
     band = Band.objects.create(

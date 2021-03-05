@@ -42,7 +42,6 @@ class Venues(ViewSet):
         venue.user.first_name = request.data['first_name']
         venue.user.last_name = request.data['last_name']
         venue.user.email = request.data['email']
-        venue.user_type = request.data['user_type']
         venue.venue_name = request.data['venue_name']
         venue.address = request.data['address']
         venue.booking_info = request.data['booking_info']
