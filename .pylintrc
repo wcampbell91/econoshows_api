@@ -4,3 +4,4 @@ good-names=i,j,ex,pk
 [MESSAGES CONTROL]
 disable=broad-except
 
+--load-plugins pylint_django

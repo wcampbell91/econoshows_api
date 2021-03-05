@@ -13,9 +13,25 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from econoshows_api.views.register import register_band, register_venue
 from django.contrib import admin
+from django.conf.urls import include
 from django.urls import path
+from django.conf import settings
+from rest_framework import routers
+from rest_framework.authtoken.views import obtain_auth_token
+from econoshows_api.models import *
+from econoshows_api.views import *
+
+
+router = routers.DefaultRouter(trailing_slash=False)
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include(router.urls)),
+    path('register_band', register_band),
+    path('register_venue', register_venue),
+    path('login', login_user)
 ]
