@@ -25,6 +25,8 @@ from econoshows_api.views import *
 
 
 router = routers.DefaultRouter(trailing_slash=False)
+router.register(r'bands', Bands, 'band')
+router.register(r'venues', Venues, 'venue')
 
 
 
