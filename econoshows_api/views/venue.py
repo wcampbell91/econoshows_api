@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
-from rest_framework import status
+from rest_framework import status, permissions
 from econoshows_api.models import Venue
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -25,8 +25,18 @@ class VenueSerializer(serializers.HyperlinkedModelSerializer):
         depth = 1
 
 
+class IsOwnerOrReadOnly(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        
+        return obj.user == request.user
+
 class Venues(ViewSet):
     """Request handler for Venues in the EconoShows platform"""
+
+    permission_classes= [ IsOwnerOrReadOnly ]
+
     def list(self, request):
         """Handle GET requests for a Venue"""
         venues = Venue.objects.all()
@@ -69,3 +79,19 @@ class Venues(ViewSet):
             )
         except Exception as ex:
             return HttpResponseServerError(ex)
+
+    def destroy(self, request, pk=None):
+        try:
+            venue = Venue.objects.get(pk=pk)
+            user = User.objects.get(pk=request.auth.user.id)
+            self.check_object_permissions(request, venue)
+            venue.delete()
+            user.delete()
+            
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+        
+        except Venue.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+        
+        except Exception as ex:
+            return Response({"message": ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
