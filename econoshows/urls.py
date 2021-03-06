@@ -28,6 +28,7 @@ router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'bands', Bands, 'band')
 router.register(r'venues', Venues, 'venue')
 router.register(r'genres', Genres, 'genre')
+router.register(r'shows', Shows, 'show')
 
 
 

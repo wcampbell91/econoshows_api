@@ -1,6 +1,8 @@
 from enum import auto
 from django.db import models
+from django.db.models.deletion import CASCADE
 from .genre import Genre
+from django.contrib.auth.models import User
 
 class Show(models.Model):
     title = models.CharField(max_length=100)
