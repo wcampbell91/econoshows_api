@@ -14,7 +14,9 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return obj.band.user == request.user or obj.venue.user == request.user
+        return obj.author == request.user
+        
+        
 
 class Shows(ViewSet):
     """Request Handlers for Shows in EconoShows"""
@@ -32,6 +34,7 @@ class Shows(ViewSet):
         """Handle POST request on Shows"""
 
         new_show = Show()
+        new_show.author = User.objects.get(pk=request.auth.user.id)
         new_show.title = request.data['title']
         new_show.door_time = request.data['door_time']
         new_show.show_time = request.data['show_time']
@@ -57,7 +60,8 @@ class Shows(ViewSet):
         new_venue.show = new_show
         new_venue.save()
 
-
+        # the request.data['bands'] MUST be a list when it comes in, 
+        # may cause problems with front end
         for band_id in request.data['bands']:
             new_band = ShowBand()
             new_band.band = Band.objects.get(pk=band_id)
@@ -70,6 +74,20 @@ class Shows(ViewSet):
             return Response(serializer.data)
         except Exception as ex:
             return HttpResponseServerError(ex)
+    
+    def destroy(self, request, pk=None):
+        try:
+            show = Show.objects.get(pk=pk)
+            # self.check_object_permissions(request,show)
+            show.delete()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+        
+        except Show.DoesNotExist as ex:
+            return Response({"message": ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as ex:
+            return Response({"message": ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class VenueOnShowSerializer(serializers.HyperlinkedModelSerializer):
@@ -109,5 +127,5 @@ class ShowSerializer(serializers.ModelSerializer):
         # url = serializers.HyperlinkedIdentityField(
         #     view_name='show', lookup_field='id'
         # )
-        fields = ('id', 'title', 'bands', 'venue', 'description','date', 'door_time', 'show_time', 'cover','is_all_ages')
+        fields = ('id', 'author', 'title', 'bands', 'venue', 'description','date', 'door_time', 'show_time', 'cover','is_all_ages')
         depth = 1

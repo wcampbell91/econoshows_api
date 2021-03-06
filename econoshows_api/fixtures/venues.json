@@ -5,11 +5,13 @@
         "fields": {
             "user": 3,
             "user_type": "venue",
-            "name": "DRKMTTR",
-            "location": "1111 DICKERSON PIKE, NASHVILLE, TN 37207",
+            "venue_name": "DRKMTTR",
+            "address": "1111 DICKERSON PIKE, NASHVILLE, TN 37207",
             "booking_info": "drkmttrcollective@gmail.com",
+            "description": "An all ages DIY venue / community organizing space in East Nashville",
             "is_all_ages": true,
             "has_backline": true,
+            "website": "https://www.drkmttrcollective.com/",
             "photos": ""
         }
     },
@@ -20,10 +22,12 @@
             "user": 4,
             "user_type": "venue",
             "name": "The East Room",
-            "location": "2412 Gallatin Ave Nashville,TN",
+            "address": "2412 Gallatin Ave Nashville,TN",
             "booking_info": "Booking@theeastroomnashville",
+            "description": "A DIY Venue in the heart of East Nashville",
             "is_all_ages": false,
             "has_backline": true,
+            "website": "https://www.theeastroomnashville.com/", 
             "photos": ""
         }
     }
