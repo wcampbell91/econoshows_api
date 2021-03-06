@@ -21,7 +21,7 @@
         "fields": {
             "user": 4,
             "user_type": "venue",
-            "name": "The East Room",
+            "venue_name": "The East Room",
             "address": "2412 Gallatin Ave Nashville,TN",
             "booking_info": "Booking@theeastroomnashville",
             "description": "A DIY Venue in the heart of East Nashville",
