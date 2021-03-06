@@ -1,3 +1,5 @@
+import base64
+from django.core.files.base import ContentFile
 from django.http import HttpResponseServerError
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -59,8 +61,14 @@ class Venues(ViewSet):
         venue.is_all_ages = request.data['is_all_ages']
         venue.has_backline = request.data['has_backline']
         venue.website = request.data['website']
-        venue.photos = request.data['photos']
-        
+
+        if "photos" in request.data and request.data['photos'] is not None:
+            format, imgstr = request.data['poster'].split(';base64,')
+            ext = format.split('/')[-1]
+            data = ContentFile(base64.b64decode(imgstr), name=f"{venue.id}-{request.data['venue_name']}.{ext}")
+
+            venue.photos = data
+
         venue.user.save()
         venue.save()
 

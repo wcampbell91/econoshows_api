@@ -1,3 +1,5 @@
+import base64
+from django.core.files.base import ContentFile
 from django.http import HttpResponseServerError
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -70,8 +72,14 @@ class Bands(ViewSet):
         band.genre = Genre.objects.get(pk=request.data['genre'])
         band.lineup = request.data['lineup']
         band.links = request.data['links']
-        band.photos = request.data['photos']
         band.bio = request.data['bio']
+
+        if "photos" in request.data and request.data['photos'] is not None:
+            format, imgstr = request.data['poster'].split(';base64,')
+            ext = format.split('/')[-1]
+            data = ContentFile(base64.b64decode(imgstr), name=f"{band.id}-{request.data['band_name']}.{ext}")
+
+            band.photos = data
 
         band.user.save()
         band.save()
