@@ -1,4 +1,6 @@
 import base64
+from econoshows_api.views.show import ShowVenueSerializer
+from econoshows_api.models.showvenue import ShowVenue
 from django.core.files.base import ContentFile
 from django.http import HttpResponseServerError
 from django.core.exceptions import ValidationError
@@ -21,9 +23,10 @@ class VenueSerializer(serializers.HyperlinkedModelSerializer):
     """JSON serializer for bands"""
     
     user = UserSerializer(many=False)
+    shows = ShowVenueSerializer(many=True)
     class Meta: 
         model = Venue
-        fields = ('id', 'user', 'venue_name','user_type', 'address', 'booking_info', 'description', 'is_all_ages', 'has_backline', 'website')
+        fields = ('id', 'user', 'shows', 'venue_name','user_type', 'address', 'booking_info', 'description', 'is_all_ages', 'has_backline', 'website')
         depth = 1
 
 
