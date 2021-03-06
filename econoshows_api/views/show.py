@@ -1,3 +1,5 @@
+import base64
+from django.core.files.base import ContentFile
 from django.http import HttpResponseServerError
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -25,7 +27,49 @@ class Shows(ViewSet):
 
         serializer = ShowSerializer(shows, many=True, context={'request': request})
         return Response(serializer.data)
+    
+    def create(self, request):
+        """Handle POST request on Shows"""
 
+        new_show = Show()
+        new_show.title = request.data['title']
+        new_show.door_time = request.data['door_time']
+        new_show.show_time = request.data['show_time']
+        new_show.cover = request.data['cover']
+        new_show.date = request.data['date']
+        new_show.is_all_ages = request.data['is_all_ages']
+        new_show.genre = Genre.objects.get(pk=request.data['genre'])
+
+        if "poster" in request.data and request.data['poster'] is not None:
+            format, imgstr = request.data['poster'].split(';base64,')
+            ext = format.split('/')[-1]
+            data = ContentFile(base64.b64decode(imgstr), name=f"{new_show.id}-{request.data['venue_name']}.{ext}")
+
+            new_show.poster = data
+        else:
+            new_show.poster = None
+
+        new_show.save()
+
+
+        new_venue = ShowVenue()
+        new_venue.venue = Venue.objects.get(pk=request.data['venue'])
+        new_venue.show = new_show
+        new_venue.save()
+
+
+        for band_id in request.data['bands']:
+            new_band = ShowBand()
+            new_band.band = Band.objects.get(pk=band_id)
+            new_band.show = new_show            
+            new_band.save()
+        
+        
+        try:
+            serializer = ShowSerializer(new_show, many=False, context={'request': request})
+            return Response(serializer.data)
+        except Exception as ex:
+            return HttpResponseServerError(ex)
 
 
 class VenueOnShowSerializer(serializers.HyperlinkedModelSerializer):
