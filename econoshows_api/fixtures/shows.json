@@ -19,6 +19,7 @@
         "model": "econoshows_api.show",
         "pk": 2,
         "fields": {
+            "author": 1,
             "title": "MYSAH / Emily Clement @ The East Room",
             "description": "We can't wait to see all of our friends again!",
             "door_time": "8:00 PM",
@@ -34,6 +35,7 @@
         "model": "econoshows_api.show",
         "pk": 3,
         "fields": {
+            "author": 2,
             "title": "TRR / Emily Nenni @ DRKMTTR",
             "description": "There won't be a tear in your beer at this lively gathering",
             "door_time": "8:00 PM",
@@ -49,6 +51,7 @@
         "model": "econoshows_api.show",
         "pk": 4,
         "fields": {
+            "author": 2,
             "title": "Orville Peck / TRR @ The East Room",
             "description": "Tour kickoff show!",
             "door_time": "8:00 PM",

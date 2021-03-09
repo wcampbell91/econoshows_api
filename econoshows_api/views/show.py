@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status, permissions
-from econoshows_api.models import Band, Genre, Venue, Show, ShowBand, ShowVenue
+from econoshows_api.models import Band, Genre, Venue, Show, ShowBand, ShowVenue, show
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
@@ -36,6 +36,7 @@ class Shows(ViewSet):
         new_show = Show()
         new_show.author = User.objects.get(pk=request.auth.user.id)
         new_show.title = request.data['title']
+        new_show.description = request.data['description']
         new_show.door_time = request.data['door_time']
         new_show.show_time = request.data['show_time']
         new_show.cover = request.data['cover']
@@ -74,6 +75,52 @@ class Shows(ViewSet):
             return Response(serializer.data)
         except Exception as ex:
             return HttpResponseServerError(ex)
+
+
+    def update(self, request, pk=None):
+        """Handle PUT requests for a show"""
+        
+        updated_show = Show.objects.get(pk=pk)
+        updated_show.title = request.data['title']
+        updated_show.description = request.data['description']
+        updated_show.door_time = request.data['door_time']
+        updated_show.show_time = request.data['show_time']
+        updated_show.cover = request.data['cover']
+        updated_show.date = request.data['date']
+        updated_show.is_all_ages = request.data['is_all_ages']
+        updated_show.genre = Genre.objects.get(pk=request.data['genre'])
+
+        if "poster" in request.data and request.data['poster'] is not None:
+            format, imgstr = request.data['poster'].split(';base64,')
+            ext = format.split('/')[-1]
+            data = ContentFile(base64.b64decode(imgstr), name=f"{updated_show.id}-{request.data['venue_name']}.{ext}")
+
+            updated_show.poster = data
+        else:
+            updated_show.poster = None
+
+        show_venue = ShowVenue.objects.get(show=pk)
+        show_venue.venue = Venue.objects.get(pk=request.data['venue'])
+        self.check_object_permissions(request, updated_show)
+        show_venue.save()
+
+        for band_id in request.data['bands']:
+            show_bands = ShowBand.objects.all()
+            for show_band in show_bands:
+                if (show_band.show == pk) and (show_band.band != band_id):
+                    show_band.band = Band.objects.get(pk=band_id)
+                    self.check_object_permissions(request, updated_show)
+                    show_band.save()
+                else:
+                    pass
+
+        self.check_object_permissions(request, updated_show)
+        updated_show.save()
+
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+
+
     
     def destroy(self, request, pk=None):
         try:
