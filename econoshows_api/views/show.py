@@ -78,7 +78,7 @@ class Shows(ViewSet):
     def destroy(self, request, pk=None):
         try:
             show = Show.objects.get(pk=pk)
-            # self.check_object_permissions(request,show)
+            # self.check_object_permissions(request, show)
             show.delete()
 
             return Response({}, status=status.HTTP_204_NO_CONTENT)
@@ -89,6 +89,20 @@ class Shows(ViewSet):
         except Exception as ex:
             return Response({"message": ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    
+    def retrieve(self, request, pk=None):
+        """Handle GET reqeusts for single show"""
+        try:
+            show = Show.objects.get(pk=pk)
+            serializer = ShowSerializer(show, many=False, context={'request': request})
+            return Response(serializer.data)
+        except Show.DoesNotExist as ex:
+            return Response(
+                {"message": "The requested Show does not exist"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as ex:
+            return HttpResponseServerError(ex)
 
 class VenueOnShowSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
