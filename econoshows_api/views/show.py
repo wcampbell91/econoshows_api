@@ -21,7 +21,8 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 class Shows(ViewSet):
     """Request Handlers for Shows in EconoShows"""
     permission_classes = [ IsOwnerOrReadOnly ]
-    
+
+
     def list(self, request):
         shows = Show.objects.all()
 
@@ -29,7 +30,8 @@ class Shows(ViewSet):
 
         serializer = ShowSerializer(shows, many=True, context={'request': request})
         return Response(serializer.data)
-    
+
+
     def create(self, request):
         """Handle POST request on Shows"""
 
@@ -55,7 +57,6 @@ class Shows(ViewSet):
 
         new_show.save()
 
-
         new_venue = ShowVenue()
         new_venue.venue = Venue.objects.get(pk=request.data['venue'])
         new_venue.show = new_show
@@ -68,7 +69,6 @@ class Shows(ViewSet):
             new_band.band = Band.objects.get(pk=band_id)
             new_band.show = new_show            
             new_band.save()
-        
         
         try:
             serializer = ShowSerializer(new_show, many=False, context={'request': request})
@@ -120,8 +120,6 @@ class Shows(ViewSet):
         return Response({}, status=status.HTTP_204_NO_CONTENT)
 
 
-
-    
     def destroy(self, request, pk=None):
         try:
             show = Show.objects.get(pk=pk)
@@ -136,7 +134,7 @@ class Shows(ViewSet):
         except Exception as ex:
             return Response({"message": ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    
+
     def retrieve(self, request, pk=None):
         """Handle GET reqeusts for single show"""
         try:
@@ -151,6 +149,7 @@ class Shows(ViewSet):
         except Exception as ex:
             return HttpResponseServerError(ex)
 
+
 class VenueOnShowSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Venue
@@ -162,6 +161,7 @@ class BandOnShowSerializer(serializers.ModelSerializer):
         model = Band
         fields = ('id', 'band_name', 'links', 'photos')
 
+
 class ShowBandSerializer(serializers.ModelSerializer):
     
     band = BandOnShowSerializer(many=False)
@@ -169,6 +169,7 @@ class ShowBandSerializer(serializers.ModelSerializer):
         model = ShowBand
         fields = ('id', 'band')
         depth = 1
+
 
 class ShowVenueSerializer(serializers.ModelSerializer):
 
@@ -185,8 +186,5 @@ class ShowSerializer(serializers.ModelSerializer):
     venue = ShowVenueSerializer(many=True)
     class Meta:
         model = Show
-        # url = serializers.HyperlinkedIdentityField(
-        #     view_name='show', lookup_field='id'
-        # )
         fields = ('id', 'author', 'title', 'bands', 'venue', 'description','date', 'door_time', 'show_time', 'cover','is_all_ages')
         depth = 1

@@ -61,7 +61,7 @@ def register_band(request):
 
     token = Token.objects.create(user=new_user)
 
-    data = json.dumps({"token": token.key, "id": new_user.id})
+    data = json.dumps({"token": token.key, "id": new_user.id, "band_id": band.id})
     return HttpResponse(data, content_type="application/json", status=status.HTTP_201_CREATED)
 
 @csrf_exempt
@@ -94,5 +94,5 @@ def register_venue(request):
 
     token = Token.objects.create(user=new_user)
     
-    data = json.dumps({"token": token.key, "id": new_user.id})
+    data = json.dumps({"token": token.key, "id": new_user.id, "venue_id": venue.id})
     return HttpResponse(data, content_type = 'application/json')
