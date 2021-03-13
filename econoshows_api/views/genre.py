@@ -5,7 +5,7 @@ from django.views.generic.base import View
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
-from rest_framework import serializers, status
+from rest_framework import serializers, status, permissions
 from econoshows_api.models import Genre
 
 class GenreSerializer(serializers.HyperlinkedModelSerializer):
@@ -19,8 +19,16 @@ class GenreSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'name')
 
 
+class IsOwnerOrReadOnly(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+
 class Genres(ViewSet):
     """Request Handlers for Genres in EconoShows"""
+
+    permission_classes = [ IsOwnerOrReadOnly ]
 
     def list(self, request):
         genres = Genre.objects.all()
