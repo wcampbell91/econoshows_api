@@ -21,7 +21,12 @@ def login_user(request):
 
         if authenticated_user is not None:
             token = Token.objects.get(user=authenticated_user)
-            data = json.dumps({"valid": True, "token": token.key, "id": authenticated_user.id})
+            try:
+                band = Band.objects.get(user=authenticated_user)
+                data = json.dumps({"valid": True, "token": token.key, "id": authenticated_user.id, "band_id": band.id})
+            except:
+                venue = Venue.objects.get(user=authenticated_user)
+                data = json.dumps({"valid": True, "token": token.key, "id": authenticated_user.id, "venue_id": venue.id})
             return HttpResponse(data, content_type='application/json')
 
         else:
