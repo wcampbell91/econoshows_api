@@ -35,6 +35,7 @@ class ShowDetailSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Show
         fields = ('id', 'title', 'venue','date')
+        
 
 class BandShowSerializer(serializers.HyperlinkedModelSerializer):
     
@@ -62,7 +63,6 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return obj.user == request.user
 
 
 class Bands(ViewSet):
@@ -106,7 +106,7 @@ class Bands(ViewSet):
     def retrieve(self, request, pk=None):
         """Handle GET requests for single band"""
         try:
-            band = Band.objects.get(pk=pk, user=request.auth.user)
+            band = Band.objects.get(pk=pk)
             serializer = BandSerializer(band, many=False, context={'request': request})
             return Response(serializer.data)
         except Band.DoesNotExist as ex:

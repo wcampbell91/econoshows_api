@@ -1,4 +1,5 @@
 import base64
+from econoshows_api.models.show import Show
 from econoshows_api.views.show import ShowVenueSerializer
 from econoshows_api.models.showvenue import ShowVenue
 from django.core.files.base import ContentFile
@@ -18,12 +19,18 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         model = User
         fields = ('first_name', 'last_name', 'username', 'email')
 
+class ShowOnVenueSerializer(serializers.ModelSerializer):
+    """JSON serializer for a show on a venue object"""
+    class Meta: 
+        model =  ShowVenue
+        fields = ('id', 'show')
+        depth = 1
 
 class VenueSerializer(serializers.HyperlinkedModelSerializer):
     """JSON serializer for bands"""
     
     user = UserSerializer(many=False)
-    shows = ShowVenueSerializer(many=True)
+    shows = ShowOnVenueSerializer(many=True)
     class Meta: 
         model = Venue
         fields = ('id', 'user', 'shows', 'venue_name','user_type', 'address', 'booking_info', 'description', 'is_all_ages', 'has_backline', 'website')
@@ -80,7 +87,7 @@ class Venues(ViewSet):
     def retrieve(self,request,pk=None):
         """Handle GET for single venue"""
         try:
-            venue = Venue.objects.get(pk=pk, user=request.auth.user)
+            venue = Venue.objects.get(pk=pk)
             serializer = VenueSerializer(venue, many=False, context={'request': request})
             return Response(serializer.data)
         except Venue.DoesNotExist as ex:
