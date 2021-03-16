@@ -177,7 +177,6 @@ class ShowVenueSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShowVenue
         fields = ('id', 'venue')
-        depth = 1
 
 
 class ShowSerializer(serializers.ModelSerializer):
