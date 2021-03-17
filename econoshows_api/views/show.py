@@ -54,11 +54,12 @@ class Shows(ViewSet):
         else:
             new_show.poster = None
 
-        new_show.save()
 
         new_venue = ShowVenue()
-        new_venue.venue = Venue.objects.get(pk=request.data['venue'])
+        new_venue.venue = Venue.objects.get(pk=request.data['venue'])        
         new_show.is_all_ages = new_venue.venue.is_all_ages
+        new_show.save()
+        
         new_venue.show = new_show
         new_venue.save()
 
