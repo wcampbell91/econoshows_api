@@ -43,7 +43,6 @@ class Shows(ViewSet):
         new_show.show_time = request.data['show_time']
         new_show.cover = request.data['cover']
         new_show.date = request.data['date']
-        new_show.is_all_ages = request.data['is_all_ages']
         new_show.genre = Genre.objects.get(pk=request.data['genre'])
 
         if "poster" in request.data and request.data['poster'] is not None:
@@ -59,6 +58,7 @@ class Shows(ViewSet):
 
         new_venue = ShowVenue()
         new_venue.venue = Venue.objects.get(pk=request.data['venue'])
+        new_show.is_all_ages = new_venue.venue.is_all_ages
         new_venue.show = new_show
         new_venue.save()
 
