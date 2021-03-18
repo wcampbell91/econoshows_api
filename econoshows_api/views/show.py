@@ -88,7 +88,6 @@ class Shows(ViewSet):
         updated_show.show_time = request.data['show_time']
         updated_show.cover = request.data['cover']
         updated_show.date = request.data['date']
-        updated_show.is_all_ages = request.data['is_all_ages']
         updated_show.genre = Genre.objects.get(pk=request.data['genre'])
 
         if "poster" in request.data and request.data['poster'] is not None:
@@ -102,6 +101,7 @@ class Shows(ViewSet):
 
         show_venue = ShowVenue.objects.get(show=pk)
         show_venue.venue = Venue.objects.get(pk=request.data['venue'])
+        updated_show.is_all_ages = show_venue.venue.is_all_ages
         self.check_object_permissions(request, updated_show)
         show_venue.save()
 
