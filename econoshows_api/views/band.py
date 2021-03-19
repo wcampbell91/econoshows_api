@@ -1,6 +1,6 @@
 import base64
 from econoshows_api.models.show import Show
-from econoshows_api.views.show import ShowVenueSerializer
+# from econoshows_api.views.show import ShowVenueSerializer
 from django.core.files.base import ContentFile
 from django.http import HttpResponseServerError
 from django.core.exceptions import ValidationError

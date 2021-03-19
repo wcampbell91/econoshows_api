@@ -12,7 +12,7 @@
             "date": "2021-10-09",
             "is_all_ages": true,
             "poster": "",
-            "bands": [2]
+            "venue": 1
         }
     },
     {
@@ -28,7 +28,8 @@
             "date": "2021-11-12",
             "is_all_ages": false,
             "poster": "",
-            "bands": [1]
+            "bands": [1],
+            "venue": 2
         }
     },
     {
@@ -44,7 +45,8 @@
             "date": "2021-05-04",
             "is_all_ages": true,
             "poster": "",
-            "bands": [2,1]
+            "bands": [2,1],
+            "venue": 1
         }
     },
     {
@@ -60,7 +62,8 @@
             "date": "2021-06-12",
             "is_all_ages": false,
             "poster": "",
-            "bands": [1,2]
+            "bands": [1,2],
+            "venue": 2
         }
     }
 ]
