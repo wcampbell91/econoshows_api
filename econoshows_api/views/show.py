@@ -97,24 +97,32 @@ class Shows(ViewSet):
         else:
             updated_show.poster = None
 
+        self.check_object_permissions(request, updated_show)
+        updated_show.save()
+
         show_venue = ShowVenue.objects.get(show=pk)
         show_venue.venue = Venue.objects.get(pk=request.data['venue'])
         updated_show.is_all_ages = show_venue.venue.is_all_ages
         self.check_object_permissions(request, updated_show)
         show_venue.save()
 
+        show_bands = ShowBand.objects.filter(show=pk)
         for band_id in request.data['bands']:
-            show_bands = ShowBand.objects.filter(show=pk)
-            for show_band in show_bands:
-                if show_band.band.id not in request.data['bands']:
-                    show_band.delete()
-                elif show_band.band.id != band_id:
-                    show_band.band = Band.objects.get(pk=band_id)
-                    self.check_object_permissions(request, updated_show)
-                    show_band.save()
+            if show_bands:
+                for show_band in show_bands:
+                    if show_band.band.id != band_id:
+                        show_band.band = Band.objects.get(pk=band_id)
+                        self.check_object_permissions(request, updated_show)
+                        show_band.save()
+                    elif show_band.band.id not in request.data['bands']:
+                        show_band.delete()
+            else:
+                new_band = ShowBand()
+                new_band.band = Band.objects.get(pk=band_id)
+                new_band.show = updated_show
+                new_band.save()
 
-        self.check_object_permissions(request, updated_show)
-        updated_show.save()
+
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
 
