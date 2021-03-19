@@ -27,7 +27,7 @@ class ShowOnVenueSerializer(serializers.ModelSerializer):
         depth = 1
 
 class VenueSerializer(serializers.HyperlinkedModelSerializer):
-    """JSON serializer for bands"""
+    """JSON serializer for venues"""
     
     user = UserSerializer(many=False)
     shows = ShowOnVenueSerializer(many=True)

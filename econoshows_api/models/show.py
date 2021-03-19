@@ -13,3 +13,4 @@ class Show(models.Model):
     date = models.DateField(auto_now=False, default="0000-00-00")
     is_all_ages = models.BooleanField(default=False)
     poster = models.ImageField(upload_to='show_posters', height_field=None, width_field=None, max_length=None, null=True)
+    bands = models.ManyToManyField("Band", related_name="shows", related_query_name="show")
