@@ -11,7 +11,6 @@
             "cover": "$10",
             "date": "2021-10-09",
             "is_all_ages": true,
-            "genre": 1,
             "poster": ""
         }
     },
@@ -27,7 +26,6 @@
             "cover": "$10",
             "date": "2021-11-12",
             "is_all_ages": false,
-            "genre": 1,
             "poster": ""
         }
     },
@@ -43,7 +41,6 @@
             "cover": "$10",
             "date": "2021-05-04",
             "is_all_ages": true,
-            "genre": 2,
             "poster": ""
         }
     },
@@ -59,7 +56,6 @@
             "cover": "$15",
             "date": "2021-06-12",
             "is_all_ages": false,
-            "genre": 2,
             "poster": ""
         }
     }

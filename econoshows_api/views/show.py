@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status, permissions
-from econoshows_api.models import Band, Genre, Venue, Show, ShowBand, ShowVenue, show
+from econoshows_api.models import Band, Venue, Show, ShowBand, ShowVenue, show
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
@@ -43,7 +43,6 @@ class Shows(ViewSet):
         new_show.show_time = request.data['show_time']
         new_show.cover = request.data['cover']
         new_show.date = request.data['date']
-        new_show.genre = Genre.objects.get(pk=request.data['genre'])
 
         if "poster" in request.data and request.data['poster'] is not None:
             format, imgstr = request.data['poster'].split(';base64,')
@@ -88,7 +87,6 @@ class Shows(ViewSet):
         updated_show.show_time = request.data['show_time']
         updated_show.cover = request.data['cover']
         updated_show.date = request.data['date']
-        updated_show.genre = Genre.objects.get(pk=request.data['genre'])
 
         if "poster" in request.data and request.data['poster'] is not None:
             format, imgstr = request.data['poster'].split(';base64,')
@@ -106,14 +104,14 @@ class Shows(ViewSet):
         show_venue.save()
 
         for band_id in request.data['bands']:
-            show_bands = ShowBand.objects.all()
+            show_bands = ShowBand.objects.filter(show=pk)
             for show_band in show_bands:
-                if (show_band.show == pk) and (show_band.band != band_id):
+                if show_band.band.id not in request.data['bands']:
+                    show_band.delete()
+                elif show_band.band.id != band_id:
                     show_band.band = Band.objects.get(pk=band_id)
                     self.check_object_permissions(request, updated_show)
                     show_band.save()
-                else:
-                    pass
 
         self.check_object_permissions(request, updated_show)
         updated_show.save()
@@ -165,7 +163,7 @@ class BandOnShowSerializer(serializers.ModelSerializer):
 
 class ShowBandSerializer(serializers.ModelSerializer):
     
-    band = BandOnShowSerializer(many=False)
+    # band = BandOnShowSerializer(many=False)
     class Meta:
         model = ShowBand
         fields = ('id', 'band')
