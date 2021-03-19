@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status, permissions
-from econoshows_api.models import Band, Genre, Venue, Show, ShowBand, ShowVenue, show
+from econoshows_api.models import Band, Venue, Show, show
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
@@ -43,7 +43,6 @@ class Shows(ViewSet):
         new_show.show_time = request.data['show_time']
         new_show.cover = request.data['cover']
         new_show.date = request.data['date']
-        new_show.genre = Genre.objects.get(pk=request.data['genre'])
 
         if "poster" in request.data and request.data['poster'] is not None:
             format, imgstr = request.data['poster'].split(';base64,')
@@ -55,21 +54,20 @@ class Shows(ViewSet):
             new_show.poster = None
 
 
-        new_venue = ShowVenue()
-        new_venue.venue = Venue.objects.get(pk=request.data['venue'])        
-        new_show.is_all_ages = new_venue.venue.is_all_ages
-        new_show.save()
         
-        new_venue.show = new_show
-        new_venue.save()
+        new_show.venue = Venue.objects.get(pk=request.data["venue"])
+        new_show.is_all_ages = new_show.venue.is_all_ages
+        new_show.save()
+        new_show.bands.set(request.data["bands"])
+        new_show.save()
 
         # the request.data['bands'] MUST be a list when it comes in, 
         # may cause problems with front end
-        for band_id in request.data['bands']:
-            new_band = ShowBand()
-            new_band.band = Band.objects.get(pk=band_id)
-            new_band.show = new_show            
-            new_band.save()
+        # for band_id in request.data['bands']:
+        #     new_band = ShowBand()
+        #     new_band.band = Band.objects.get(pk=band_id)
+        #     new_band.show = new_show            
+        #     new_band.save()
         
         try:
             serializer = ShowSerializer(new_show, many=False, context={'request': request})
@@ -88,8 +86,6 @@ class Shows(ViewSet):
         updated_show.show_time = request.data['show_time']
         updated_show.cover = request.data['cover']
         updated_show.date = request.data['date']
-        updated_show.is_all_ages = request.data['is_all_ages']
-        updated_show.genre = Genre.objects.get(pk=request.data['genre'])
 
         if "poster" in request.data and request.data['poster'] is not None:
             format, imgstr = request.data['poster'].split(';base64,')
@@ -100,23 +96,35 @@ class Shows(ViewSet):
         else:
             updated_show.poster = None
 
-        show_venue = ShowVenue.objects.get(show=pk)
-        show_venue.venue = Venue.objects.get(pk=request.data['venue'])
-        self.check_object_permissions(request, updated_show)
-        show_venue.save()
-
-        for band_id in request.data['bands']:
-            show_bands = ShowBand.objects.all()
-            for show_band in show_bands:
-                if (show_band.show == pk) and (show_band.band != band_id):
-                    show_band.band = Band.objects.get(pk=band_id)
-                    self.check_object_permissions(request, updated_show)
-                    show_band.save()
-                else:
-                    pass
-
+        updated_show.venue = Venue.objects.get(pk=request.data["venue"])
+        updated_show.is_all_ages = updated_show.venue.is_all_ages
         self.check_object_permissions(request, updated_show)
         updated_show.save()
+
+        updated_show.bands.set(request.data["bands"])
+        updated_show.save()
+
+        # show_bands = ShowBand.objects.filter(show=pk)
+
+        # for band_id in request.data['bands']:
+        #     if show_bands:
+        #         for show_band in show_bands:
+        #             if show_band.band.id != band_id:
+        #                 show_band.band = Band.objects.get(pk=band_id)
+        #                 # self.check_object_permissions(request, updated_show)
+        #                 show_band.save()
+        #                 break
+        #             elif show_band.band.id not in request.data['bands']:
+        #                 show_band.delete()
+        #                 break
+        #     else:
+        #         new_band = ShowBand()
+        #         new_band.band = Band.objects.get(pk=band_id)
+        #         new_band.show = updated_show
+        #         new_band.save()
+        #         break
+
+
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
 
@@ -151,39 +159,39 @@ class Shows(ViewSet):
             return HttpResponseServerError(ex)
 
 
-class VenueOnShowSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Venue
-        fields = ('id', 'venue_name', 'address', 'website', 'photos')
+# class VenueOnShowSerializer(serializers.HyperlinkedModelSerializer):
+#     class Meta:
+#         model = Venue
+#         fields = ('id', 'venue_name', 'address', 'website', 'photos')
 
 
-class BandOnShowSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Band
-        fields = ('id', 'band_name', 'links', 'photos')
+# class BandOnShowSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Band
+#         fields = ('id', 'band_name', 'links', 'photos')
 
 
-class ShowBandSerializer(serializers.ModelSerializer):
+# class ShowBandSerializer(serializers.ModelSerializer):
     
-    band = BandOnShowSerializer(many=False)
-    class Meta:
-        model = ShowBand
-        fields = ('id', 'band')
-        depth = 1
+#     # band = BandOnShowSerializer(many=False)
+#     class Meta:
+#         model = ShowBand
+#         fields = ('id', 'band')
+#         depth = 1
 
 
-class ShowVenueSerializer(serializers.ModelSerializer):
+# class ShowVenueSerializer(serializers.ModelSerializer):
 
-    venue = VenueOnShowSerializer(many=False)
-    class Meta:
-        model = ShowVenue
-        fields = ('id', 'venue')
+#     venue = VenueOnShowSerializer(many=False)
+#     class Meta:
+#         model = ShowVenue
+#         fields = ('id', 'venue')
 
 
 class ShowSerializer(serializers.ModelSerializer):
 
-    bands = ShowBandSerializer(many=True)
-    venue = ShowVenueSerializer(many=True)
+    # bands = ShowBandSerializer(many=True)
+    # venue = ShowVenueSerializer(many=True)
     class Meta:
         model = Show
         fields = ('id', 'author', 'title', 'bands', 'venue', 'description','date', 'door_time', 'show_time', 'cover','is_all_ages')

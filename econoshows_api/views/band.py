@@ -1,6 +1,6 @@
 import base64
 from econoshows_api.models.show import Show
-from econoshows_api.views.show import ShowVenueSerializer
+# from econoshows_api.views.show import ShowVenueSerializer
 from django.core.files.base import ContentFile
 from django.http import HttpResponseServerError
 from django.core.exceptions import ValidationError
@@ -9,52 +9,46 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status, permissions
-from econoshows_api.models import Band, Genre, ShowBand
+from econoshows_api.models import Band, Genre
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     """JSON serializer for user"""
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'username', 'email')
+        fields = ['id', 'first_name', 'last_name', 'username', 'email']
 
 
-class BandGenreSerializer(serializers.HyperlinkedModelSerializer):
+class BandGenreSerializer(serializers.ModelSerializer):
     """JSON serializer for genres on band"""
 
     class Meta:
         model = Genre
-        url = serializers.HyperlinkedIdentityField(
-            view_name="genre", lookup_field="id"
-        )
         fields = ('id', 'name')
 
-class ShowDetailSerializer(serializers.HyperlinkedModelSerializer):
+# class ShowDetailSerializer(serializers.HyperlinkedModelSerializer):
 
-    venue = ShowVenueSerializer(many=True)
-    class Meta:
-        model = Show
-        fields = ('id', 'title', 'venue','date')
+#     venue = ShowVenueSerializer(many=True)
+#     class Meta:
+#         model = Show
+#         fields = ('id', 'title', 'venue','date')
         
 
-class BandShowSerializer(serializers.HyperlinkedModelSerializer):
+# class BandShowSerializer(serializers.HyperlinkedModelSerializer):
     
-    show = ShowDetailSerializer(many=False)
-    class Meta: 
-        model = ShowBand
-        fields = ('id', 'show')
+#     show = ShowDetailSerializer(many=False)
+#     class Meta: 
+#         model = ShowBand
+#         fields = ('id', 'show')
 
-class BandSerializer(serializers.HyperlinkedModelSerializer):
+class BandSerializer(serializers.ModelSerializer):
     """JSON serializer for bands"""
     
     user = UserSerializer(many=False)
     genre = BandGenreSerializer(many=False)
-    shows = BandShowSerializer(many=True)
+    # shows = BandShowSerializer(many=True)
     class Meta: 
         model = Band
-        url = serializers.HyperlinkedIdentityField(
-            view_name='band', lookup_field='id'
-        )
         fields = ('id', 'user', 'band_name', 'genre', 'user_type', 'lineup', 'links', 'bio', 'shows')
         depth = 1
 
