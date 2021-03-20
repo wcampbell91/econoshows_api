@@ -10,6 +10,8 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status, permissions
 from econoshows_api.models import Band, Genre
+from datetime import date   
+
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -66,6 +68,7 @@ class Bands(ViewSet):
     
     def list(self, request):
         bands = Band.objects.all()
+        
         
         #add FILTERING here
 
