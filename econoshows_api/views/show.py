@@ -8,6 +8,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status, permissions
 from econoshows_api.models import Band, Venue, Show, show
+from datetime import date   
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
@@ -22,9 +23,11 @@ class Shows(ViewSet):
     """Request Handlers for Shows in EconoShows"""
     permission_classes = [ IsOwnerOrReadOnly ]
 
-
+    
     def list(self, request):
-        shows = Show.objects.all()
+        shows = Show.objects.order_by("date").filter(date__gt=date.today())
+
+
 
         # Add filtering here
 
