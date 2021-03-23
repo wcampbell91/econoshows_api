@@ -9,7 +9,7 @@
             "genre": 2,
             "lineup": "4-piece",
             "links": "mysahband.bandcamp.com",
-            "photos": "MYSAH.jpg",
+            "photos": "bands/MYSAH.jpg",
             "bio": "4-piece rock band from Nashville, TN compromised of lead singer songwriter Billy Campbell joined with his backing band of Daniel Sauls on drums, Parker Van Der Hyde on Bass, and Josh Halper on Lead Guitar"
         }
     },
@@ -23,7 +23,7 @@
             "genre": 1,
             "lineup": "4-piece",
             "links": "https://teddyandtheroughriders.bandcamp.com/",
-            "photos": "TRR.jpeg",
+            "photos": "bands/TRR.jpeg",
             "bio": "4-piece outlaw country outfit from Nashville, TN"
         }
     }

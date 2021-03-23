@@ -11,7 +11,7 @@
             "cover": "$10",
             "date": "2021-10-09",
             "is_all_ages": true,
-            "poster": "",
+            "poster": "show_posters/MYSAH2.jpeg",
             "venue": 1
         }
     },
@@ -27,7 +27,7 @@
             "cover": "$10",
             "date": "2021-11-12",
             "is_all_ages": false,
-            "poster": "spewfest2.jpg",
+            "poster": "show_posters/spewfest2.jpg",
             "bands": [1],
             "venue": 2
         }
@@ -44,7 +44,7 @@
             "cover": "$10",
             "date": "2021-05-04",
             "is_all_ages": true,
-            "poster": "",
+            "poster": "show_posters/TRR_show1.jpeg",
             "bands": [2,1],
             "venue": 1
         }
@@ -54,14 +54,14 @@
         "pk": 4,
         "fields": {
             "author": 2,
-            "title": "Orville Peck / TRR @ The East Room",
+            "title": "MYSAH @ The East Room",
             "description": "Tour kickoff show!",
             "door_time": "8:00 PM",
             "show_time": "9:00 PM",
             "cover": "$15",
             "date": "2021-06-12",
             "is_all_ages": false,
-            "poster": "",
+            "poster": "show_posters/mysah1.jpg",
             "bands": [1,2],
             "venue": 2
         }
