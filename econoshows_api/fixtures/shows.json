@@ -4,7 +4,7 @@
         "pk": 1,
         "fields": {
             "author": 1,
-            "title": "MYSAH / Styrofoam Winos @ DRKMTTR",
+            "title": "MYSAH @ DRKMTTR",
             "description": "Come hang with us and our friends Styrofoam Winos for our Full length album release!",
             "door_time": "8:00 PM",
             "show_time": "9:00 PM",
@@ -20,14 +20,14 @@
         "pk": 2,
         "fields": {
             "author": 1,
-            "title": "MYSAH / Emily Clement @ The East Room",
+            "title": "SPEWFEST",
             "description": "We can't wait to see all of our friends again!",
             "door_time": "8:00 PM",
             "show_time": "9:00 PM",
             "cover": "$10",
             "date": "2021-11-12",
             "is_all_ages": false,
-            "poster": "",
+            "poster": "spewfest2.jpg",
             "bands": [1],
             "venue": 2
         }
@@ -37,7 +37,7 @@
         "pk": 3,
         "fields": {
             "author": 2,
-            "title": "TRR / Emily Nenni @ DRKMTTR",
+            "title": "TRR @ DRKMTTR",
             "description": "There won't be a tear in your beer at this lively gathering",
             "door_time": "8:00 PM",
             "show_time": "9:00 PM",

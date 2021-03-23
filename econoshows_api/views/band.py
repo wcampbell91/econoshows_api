@@ -51,7 +51,7 @@ class BandSerializer(serializers.ModelSerializer):
     # shows = BandShowSerializer(many=True)
     class Meta: 
         model = Band
-        fields = ('id', 'user', 'band_name', 'genre', 'user_type', 'lineup', 'links', 'bio', 'shows')
+        fields = ('id', 'user', 'band_name', 'genre', 'user_type', 'lineup', 'links', 'bio', 'photos', 'shows')
         depth = 1
 
 
@@ -94,6 +94,9 @@ class Bands(ViewSet):
             data = ContentFile(base64.b64decode(imgstr), name=f"{band.id}-{request.data['band_name']}.{ext}")
 
             band.photos = data
+        else:
+            band.photos = None
+
 
         band.user.save()
         band.save()

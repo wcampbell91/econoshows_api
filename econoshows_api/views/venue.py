@@ -33,7 +33,7 @@ class VenueSerializer(serializers.ModelSerializer):
     # shows = ShowOnVenueSerializer(many=True)
     class Meta: 
         model = Venue
-        fields = ('id', 'user', 'shows', 'venue_name','user_type', 'address', 'booking_info', 'description', 'is_all_ages', 'has_backline', 'website')
+        fields = ('id', 'user', 'shows', 'venue_name','user_type', 'address', 'booking_info', 'description', 'is_all_ages', 'has_backline', 'website', 'photos')
         depth = 1
 
 
@@ -73,7 +73,7 @@ class Venues(ViewSet):
         venue.website = request.data['website']
 
         if "photos" in request.data and request.data['photos'] is not None:
-            format, imgstr = request.data['poster'].split(';base64,')
+            format, imgstr = request.data['photos'].split(';base64,')
             ext = format.split('/')[-1]
             data = ContentFile(base64.b64decode(imgstr), name=f"{venue.id}-{request.data['venue_name']}.{ext}")
 
