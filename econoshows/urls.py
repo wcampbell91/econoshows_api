@@ -16,6 +16,7 @@ Including another URLconf
 from econoshows_api.views.register import register_band, register_venue
 from django.contrib import admin
 from django.conf.urls import include
+from django.conf.urls.static import static
 from django.urls import path
 from django.conf import settings
 from rest_framework import routers
@@ -39,4 +40,4 @@ urlpatterns = [
     path('register_band', register_band),
     path('register_venue', register_venue),
     path('login', login_user)
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -50,7 +50,7 @@ class Shows(ViewSet):
         if "poster" in request.data and request.data['poster'] is not None:
             format, imgstr = request.data['poster'].split(';base64,')
             ext = format.split('/')[-1]
-            data = ContentFile(base64.b64decode(imgstr), name=f"{new_show.id}-{request.data['venue_name']}.{ext}")
+            data = ContentFile(base64.b64decode(imgstr), name=f"{new_show.id}-{request.data['title']}.{ext}")
 
             new_show.poster = data
         else:
@@ -93,7 +93,7 @@ class Shows(ViewSet):
         if "poster" in request.data and request.data['poster'] is not None:
             format, imgstr = request.data['poster'].split(';base64,')
             ext = format.split('/')[-1]
-            data = ContentFile(base64.b64decode(imgstr), name=f"{updated_show.id}-{request.data['venue_name']}.{ext}")
+            data = ContentFile(base64.b64decode(imgstr), name=f"{updated_show.id}-{request.data['title']}.{ext}")
 
             updated_show.poster = data
         else:
@@ -197,5 +197,5 @@ class ShowSerializer(serializers.ModelSerializer):
     # venue = ShowVenueSerializer(many=True)
     class Meta:
         model = Show
-        fields = ('id', 'author', 'title', 'bands', 'venue', 'description','date', 'door_time', 'show_time', 'cover','is_all_ages')
+        fields = ('id', 'author', 'title', 'bands', 'venue', 'description','date', 'door_time', 'show_time', 'cover','is_all_ages', 'poster')
         depth = 1
