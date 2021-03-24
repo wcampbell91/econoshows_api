@@ -26,5 +26,33 @@
             "photos": "bands/TRR.jpeg",
             "bio": "4-piece outlaw country outfit from Nashville, TN"
         }
+    },
+    {
+        "model": "econoshows_api.band", 
+        "pk": 3,
+        "fields": {
+            "user": 5,
+            "user_type": "band",
+            "band_name": "Styrofoam Winos",
+            "genre": 3,
+            "lineup": "3-piece",
+            "links": "https://styrofoamwinos.bandcamp.com/",
+            "photos": "bands/3-Styrofoam_Winos.jpeg",
+            "bio": "A Nashville Staple!"
+        }
+    },
+    {
+        "model": "econoshows_api.band", 
+        "pk": 4,
+        "fields": {
+            "user": 6,
+            "user_type": "band",
+            "band_name": "Rainsticks",
+            "genre": 1,
+            "lineup": "4-piece",
+            "links": "https://rainsticks.bandcamp.com/",
+            "photos": "bands/4-Rainsticks.webp",
+            "bio": "Asher's one stop shop for all things great"
+        }
     }
 ]

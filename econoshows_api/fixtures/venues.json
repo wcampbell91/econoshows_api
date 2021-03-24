@@ -30,5 +30,21 @@
             "website": "https://www.theeastroomnashville.com/", 
             "photos": "venues/the_east_room.jpeg"
         }
+    },
+    {
+        "model": "econoshows_api.venue",
+        "pk": 3,
+        "fields": {
+            "user": 7,
+            "user_type": "venue",
+            "venue_name": "Betty's Bar & Grill",
+            "address": "1212 Charlotte Ave",
+            "booking_info": "betty@betty.com",
+            "description": "A local favorite dive bar",
+            "is_all_ages": false,
+            "has_backline": false,
+            "website": "Bettys.com", 
+            "photos": "venues/3-Bettys_Bar__Grill.jpeg"
+        }
     }
 ]
