@@ -73,11 +73,17 @@ class Venues(ViewSet):
         venue.website = request.data['website']
 
         if "photos" in request.data and request.data['photos'] is not None:
-            format, imgstr = request.data['photos'].split(';base64,')
-            ext = format.split('/')[-1]
-            data = ContentFile(base64.b64decode(imgstr), name=f"{venue.id}-{request.data['venue_name']}.{ext}")
+            if ";base64" in request.data["photos"]: 
+                format, imgstr = request.data['photos'].split(';base64,')
+                ext = format.split('/')[-1]
+                data = ContentFile(base64.b64decode(imgstr), name=f"{venue.id}-{request.data['venue_name']}.{ext}")
 
-            venue.photos = data
+                venue.photos = data
+            else:
+                junk, file = request.data["photos"].split('http://localhost:8000/media')
+                venue.photos = file
+        else: 
+            venue.photos = None
 
         venue.user.save()
         venue.save()
