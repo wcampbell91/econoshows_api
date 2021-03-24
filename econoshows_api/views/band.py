@@ -89,11 +89,15 @@ class Bands(ViewSet):
         band.bio = request.data['bio']
 
         if "photos" in request.data and request.data['photos'] is not None:
-            format, imgstr = request.data['photos'].split(';base64,')
-            ext = format.split('/')[-1]
-            data = ContentFile(base64.b64decode(imgstr), name=f"{band.id}-{request.data['band_name']}.{ext}")
+            if ";base64" in request.data["photos"]: 
+                format, imgstr = request.data['photos'].split(';base64,')
+                ext = format.split('/')[-1]
+                data = ContentFile(base64.b64decode(imgstr), name=f"{band.id}-{request.data['band_name']}.{ext}")
 
-            band.photos = data
+                band.photos = data
+            else:
+                junk, file = request.data["photos"].split('http://localhost:8000/media')
+                band.photos = file
         else:
             band.photos = None
 

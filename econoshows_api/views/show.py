@@ -91,11 +91,15 @@ class Shows(ViewSet):
         updated_show.date = request.data['date']
 
         if "poster" in request.data and request.data['poster'] is not None:
-            format, imgstr = request.data['poster'].split(';base64,')
-            ext = format.split('/')[-1]
-            data = ContentFile(base64.b64decode(imgstr), name=f"{updated_show.id}-{request.data['title']}.{ext}")
+            if ";base64" in request.data["poster"]: 
+                format, imgstr = request.data['poster'].split(';base64,')
+                ext = format.split('/')[-1]
+                data = ContentFile(base64.b64decode(imgstr), name=f"{updated_show.id}-{request.data['title']}.{ext}")
 
-            updated_show.poster = data
+                updated_show.poster = data
+            else: 
+                junk, file = request.data["poster"].split('http://localhost:8000/media')
+                updated_show.photos = file
         else:
             updated_show.poster = None
 
