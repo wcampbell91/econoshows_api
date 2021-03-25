@@ -75,7 +75,7 @@
         "model": "auth.user",
         "pk": 5,
         "fields": {
-            "password": "lou",
+            "password": "pbkdf2_sha256$150000$fHDURJBIASpx$trZS1MWc6YiNe5EYNBap+P+zMAwpNgNbUZH/b95gvdw=",
             "last_login": null,
             "is_superuser": false,
             "username": "lou@lou.com",
@@ -93,7 +93,7 @@
         "model": "auth.user",
         "pk": 6,
         "fields": {
-            "password": "asher",
+            "password": "pbkdf2_sha256$150000$fHDURJBIASpx$trZS1MWc6YiNe5EYNBap+P+zMAwpNgNbUZH/b95gvdw=",
             "last_login": null,
             "is_superuser": false,
             "username": "ahorton",
@@ -111,7 +111,7 @@
         "model": "auth.user",
         "pk": 7,
         "fields": {
-            "password": "betty",
+            "password": "pbkdf2_sha256$150000$fHDURJBIASpx$trZS1MWc6YiNe5EYNBap+P+zMAwpNgNbUZH/b95gvdw=",
             "last_login": null,
             "is_superuser": false,
             "username": "bettyBar",
