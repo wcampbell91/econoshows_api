@@ -12,6 +12,7 @@
             "date": "2021-10-09",
             "is_all_ages": true,
             "poster": "show_posters/MYSAH2.jpeg",
+            "bands": [1,2],
             "venue": 1
         }
     },
