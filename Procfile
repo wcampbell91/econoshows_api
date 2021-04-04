@@ -1,1 +1,1 @@
-web: gunicorn econoshows.wsgi.application
+web: gunicorn econoshows.wsgi
