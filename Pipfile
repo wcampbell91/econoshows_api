@@ -12,7 +12,10 @@ autopep8 = "*"
 pylint = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
+django_heroku="*"
 gunicorn="*"
+django-heroku = "*"
+psycopg2-binary = "*"
 
 [requires]
 python_version = "3.8"
