@@ -28,27 +28,12 @@ class BandGenreSerializer(serializers.ModelSerializer):
         model = Genre
         fields = ('id', 'name')
 
-# class ShowDetailSerializer(serializers.HyperlinkedModelSerializer):
-
-#     venue = ShowVenueSerializer(many=True)
-#     class Meta:
-#         model = Show
-#         fields = ('id', 'title', 'venue','date')
-        
-
-# class BandShowSerializer(serializers.HyperlinkedModelSerializer):
-    
-#     show = ShowDetailSerializer(many=False)
-#     class Meta: 
-#         model = ShowBand
-#         fields = ('id', 'show')
 
 class BandSerializer(serializers.ModelSerializer):
     """JSON serializer for bands"""
     
     user = UserSerializer(many=False)
     genre = BandGenreSerializer(many=False)
-    # shows = BandShowSerializer(many=True)
     class Meta: 
         model = Band
         fields = ('id', 'user', 'band_name', 'genre', 'user_type', 'lineup', 'links', 'bio', 'photos', 'shows')
@@ -68,7 +53,14 @@ class Bands(ViewSet):
     
     def list(self, request):
         bands = Band.objects.all()
-        
+
+        band = self.request.query_params.get('band', None)
+        genre = self.request.query_params.get('genre', None)
+
+        if band is not None:
+            bands = bands.filter(pk=band)
+        if genre is not None:
+            bands = bands.filter(genre__id=genre)
         
         #add FILTERING here
 
