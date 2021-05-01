@@ -28,7 +28,9 @@ SECRET_KEY = 'kb9jy)4sg^91c(vlgxth5z4+2e0eg8^ziedp40fvx-j-ro@3tq'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'https://econoshows-api.herokuapp.com'
+]
 
 
 # Application definition
